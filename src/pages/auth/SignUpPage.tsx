@@ -165,3 +165,87 @@ const SignUpPage: React.FC = () => {
 };
 
 export default SignUpPage;
+
+
+
+Update SignupFormData Interface:
+
+typescript
+Copy code
+interface SignupFormData {
+  email: string;
+  password: string;
+  password_confirm: string;
+  first_name: string;
+  last_name: string;
+}
+Update State Initialization:
+
+typescript
+Copy code
+const [formData, setFormData] = useState<SignupFormData>({
+  email: '',
+  password: '',
+  password_confirm: '',
+  first_name: '',
+  last_name: '',
+});
+Update Input Fields:
+
+Replace name and confirmPassword with first_name, last_name, and password_confirm.
+
+jsx
+Copy code
+// First Name
+<Input
+  type="text"
+  name="first_name"
+  placeholder="First Name"
+  value={formData.first_name}
+  onChange={handleChange}
+  required
+  className="w-full"
+/>
+// Last Name
+<Input
+  type="text"
+  name="last_name"
+  placeholder="Last Name"
+  value={formData.last_name}
+  onChange={handleChange}
+  required
+  className="w-full"
+/>
+// Confirm Password
+<Input
+  type="password"
+  name="password_confirm"
+  placeholder="Confirm Password"
+  value={formData.password_confirm}
+  onChange={handleChange}
+  required
+  className="w-full"
+/>
+Adjust Validation Function:
+
+typescript
+Copy code
+const validateForm = (): boolean => {
+  if (formData.password !== formData.password_confirm) {
+    showToast('Passwords do not match', 'error');
+    return false;
+  }
+  if (formData.password.length < 6) {
+    showToast('Password must be at least 6 characters long', 'error');
+    return false;
+  }
+  return true;
+};
+
+
+
+
+
+
+
+THE SIGNUPFORM IS EMPTY I SAID THAT OVER 100000000000000000000000000000000000000000 TIMES! 

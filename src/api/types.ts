@@ -32,4 +32,5 @@ export interface AuthContextProps {
   login: (credentials: LoginCredentials) => void;
   register: (data: RegisterCredentials) => void;
   logout: () => void;
+  tokenLogin: (tokens: { access: string; refresh: string }) => void;
 }

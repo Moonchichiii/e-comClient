@@ -1,40 +1,33 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
-    es2021: true,
+    es2020: true
   },
   extends: [
     'eslint:recommended',
-    'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
-    'prettier',
+    'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime'
   ],
+  ignorePatterns: ['dist', '.eslintrc.js'],
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
-  plugins: ['react', '@typescript-eslint', 'react-hooks', 'import'],
+  plugins: [
+    'react-refresh',
+    'react',
+    '@typescript-eslint'
+  ],
   rules: {
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    'import/no-unresolved': ['error', { caseSensitive: true }],
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    'react/react-in-jsx-scope': 'off'
   },
   settings: {
     react: {
-      version: 'detect',
-    },
-    'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
-        project: './tsconfig.json',
-      },
-    },
-  },
-};
+      version: 'detect'
+    }
+  }
+}

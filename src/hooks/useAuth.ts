@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { authEndpoints } from '@/api/Endpoints';
 import { AuthContextProps, User } from '@/api/types';
+import { AxiosInstance } from '@/api/apiConfig';
 
 export function useAuth(): AuthContextProps {
   const queryClient = useQueryClient();
@@ -56,6 +57,13 @@ export function useAuth(): AuthContextProps {
     },
   });
 
+  // Token Login Function
+  const tokenLogin = (tokens: { access: string; refresh: string }) => {
+    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${tokens.access}`;
+    queryClient.invalidateQueries(['user']);
+    navigate('/dashboard');
+  };
+
   return {
     user: user || null,
     isLoading,
@@ -64,5 +72,6 @@ export function useAuth(): AuthContextProps {
     tokenLogin: tokenLoginMutation.mutate,
     register: registerMutation.mutate,
     logout: logoutMutation.mutate,
+    tokenLogin, 
   };
 }
