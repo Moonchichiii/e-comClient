@@ -1,48 +1,33 @@
-import { createContext, useCallback, useContext, useState } from 'react';
-import { Toast } from '@/components/ui/toast';
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
+import { Toast, ToastProps } from '@/components/ui/Toast';
+import { useState, useEffect } from 'react';
 
-interface ToastContextType {
-  showToast: (message: string, type?: 'success' | 'error' | 'info') => void;
-}
+const ToastContainer: React.FC = () => {
+  const queryClient = useQueryClient();
+  const [toasts, setToasts] = useState<ToastProps[]>([]);
 
-const ToastContext = createContext<ToastContextType | undefined>(undefined);
-
-export function ToastProvider({ children }: { children: React.ReactNode }) {
-  const [toast, setToast] = useState<{
-    open: boolean;
-    message: string;
-    type: 'success' | 'error' | 'info';
-  }>({
-    open: false,
-    message: '',
-    type: 'info',
-  });
-
-  const showToast = useCallback(
-    (message: string, type: 'success' | 'error' | 'info' = 'info') => {
-      setToast({ open: true, message, type });
-    },
-    []
-  );
+  useEffect(() => {
+    const unsubscribe = queryClient.getQueryCache().subscribe(() => {
+      const toastQueue = queryClient.getQueryData<ToastProps[]>('toasts') || [];
+      setToasts(toastQueue);
+    });
+    return () => unsubscribe();
+  }, [queryClient]);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
-      {children}
-      <Toast
-        open={toast.open}
-        onOpenChange={(open) => setToast((prev) => ({ ...prev, open }))}
-        type={toast.type}
-      >
-        {toast.message}
-      </Toast>
-    </ToastContext.Provider>
+    <>
+      {toasts.map((toast, index) => (
+        <Toast key={index} {...toast} />
+      ))}
+    </>
   );
-}
-
-export const useToast = () => {
-  const context = useContext(ToastContext);
-  if (context === undefined) {
-    throw new Error('useToast must be used within a ToastProvider');
-  }
-  return context;
 };
+
+const queryClient = new QueryClient();
+
+export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <QueryClientProvider client={queryClient}>
+    {children}
+    <ToastContainer />
+  </QueryClientProvider>
+);

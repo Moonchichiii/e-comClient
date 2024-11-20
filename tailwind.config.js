@@ -1,7 +1,6 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
+  darkMode: ["class"], // Enable dark mode with class
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -10,15 +9,12 @@ module.exports = {
   ],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
+      fontFamily: {
+        abys: ['Abys', 'sans-serif'], // Custom font family
+      },
       colors: {
+        lightBackground: "#f2f1ec", // Light mode background color
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -73,6 +69,13 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
   },
   plugins: [],
-}
+};

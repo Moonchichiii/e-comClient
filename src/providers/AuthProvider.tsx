@@ -1,6 +1,9 @@
-import { type ReactNode } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import React, { createContext, useContext } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useAuth } from '@/hooks/useAuth';
+
+const AuthContext = createContext(null);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,13 +12,25 @@ const queryClient = new QueryClient({
       retry: 1,
     },
   },
-})
+});
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const auth = useAuth();
+
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
+      <AuthContext.Provider value={auth}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </AuthContext.Provider>
     </QueryClientProvider>
-  )
-}
+  );
+};
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuthContext must be used within an AuthProvider');
+  }
+  return context;
+};

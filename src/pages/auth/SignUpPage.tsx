@@ -1,13 +1,12 @@
-// SignupPage.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton';
-import { useAuth } from '@/features/auth/context/AuthContext';
-
+import { useAuth } from '@/hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
+import { ToastProps } from '@/components/ui/Toast';
 
 interface SignupFormData {
   email: string;
@@ -16,17 +15,29 @@ interface SignupFormData {
   name: string;
 }
 
-const SignupPage: React.FC = () => {
+const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
-  const { signup } = useAuth();
+  const { register } = useAuth();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<SignupFormData>({
     email: '',
     password: '',
     confirmPassword: '',
     name: '',
   });
+
+  const showToast = (message: string, type: ToastProps['type']) => {
+    const currentToasts = queryClient.getQueryData<ToastProps[]>('toasts') || [];
+    queryClient.setQueryData('toasts', [...currentToasts, { message, type }]);
+
+    setTimeout(() => {
+      queryClient.setQueryData(
+        'toasts',
+        (prevToasts) => prevToasts?.filter((toast) => toast.message !== message) || []
+      );
+    }, 3000);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -37,11 +48,11 @@ const SignupPage: React.FC = () => {
 
   const validateForm = (): boolean => {
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      showToast('Passwords do not match', 'error');
       return false;
     }
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      showToast('Password must be at least 6 characters long', 'error');
       return false;
     }
     return true;
@@ -49,7 +60,6 @@ const SignupPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
 
     if (!validateForm()) {
       return;
@@ -57,10 +67,11 @@ const SignupPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      await signup(formData);
+      await register(formData);
+      showToast('Account created successfully!', 'success');
       navigate('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Signup failed');
+      showToast(err instanceof Error ? err.message : 'Signup failed', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -70,14 +81,9 @@ const SignupPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Sign Up</CardTitle>
         </CardHeader>
         <CardContent>
-          {error && (
-            <div className="mb-4 p-4 text-sm text-red-800 bg-red-100 rounded-lg">
-              {error}
-            </div>
-          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Input
@@ -141,7 +147,6 @@ const SignupPage: React.FC = () => {
                 <span className="px-2 bg-white text-gray-500">Or continue with</span>
               </div>
             </div>
-            
             <div className="mt-4">
               <GoogleLoginButton />
             </div>
@@ -150,7 +155,7 @@ const SignupPage: React.FC = () => {
           <p className="mt-4 text-center text-sm text-gray-600">
             Already have an account?{' '}
             <Link to="/login" className="font-medium text-primary hover:text-primary/80">
-              Sign in
+              Log in
             </Link>
           </p>
         </CardContent>
@@ -159,4 +164,4 @@ const SignupPage: React.FC = () => {
   );
 };
 
-export default SignupPage;
+export default SignUpPage;
