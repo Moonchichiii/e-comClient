@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useAuthContext } from '@/providers/AuthProvider';
-import { axiosInstance } from '@/lib/axios';
+import { axiosInstance } from '@/api/apiConfig';
 
 export const useGoogleLogin = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(false);  
+  const { tokenLogin } = useAuthContext();
 
   const loginWithGoogle = async () => {
     try {
@@ -31,7 +31,7 @@ export const useGoogleLogin = () => {
         if (event.origin !== window.location.origin) return;
         if (event.data.type === 'social_auth_success') {
           popup.close();
-          await login(event.data.tokens);
+          await tokenLogin(event.data.tokens);
           window.removeEventListener('message', messageHandler);
         }
       };

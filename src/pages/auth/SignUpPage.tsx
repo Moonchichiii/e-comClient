@@ -28,8 +28,8 @@ const SignUpPage: React.FC = () => {
   });
 
   const showToast = (message: string, type: ToastProps['type']) => {
-    const currentToasts = queryClient.getQueryData<ToastProps[]>('toasts') || [];
-    queryClient.setQueryData('toasts', [...currentToasts, { message, type }]);
+    const currentToasts = queryClient.getQueryData<ToastProps[]>(['toasts']) || [];
+    queryClient.setQueryData(['toasts'], [...currentToasts, { message, type }]);
 
     setTimeout(() => {
       queryClient.setQueryData(

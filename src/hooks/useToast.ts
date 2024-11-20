@@ -5,13 +5,14 @@ export const useToast = () => {
   const queryClient = useQueryClient();
 
   const showToast = (message: string, type: ToastProps['type'] = 'info') => {
-    const currentToasts = queryClient.getQueryData<ToastProps[]>('toasts') || [];
-    queryClient.setQueryData('toasts', [...currentToasts, { message, type }]);
+    const currentToasts = queryClient.getQueryData<ToastProps[]>(['toasts']) || [];
+    queryClient.setQueryData(['toasts'], [...currentToasts, { message, type }]);
 
     setTimeout(() => {
       queryClient.setQueryData(
-        'toasts',
-        (prevToasts) => prevToasts?.filter((toast) => toast.message !== message) || []
+        ['toasts'],
+        (prevToasts: ToastProps[] | undefined) =>
+          prevToasts?.filter((toast: ToastProps) => toast.message !== message) || []
       );
     }, 3000);
   };

@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import ProtectedRoute from '@/utils/ProtectedRoute';
 
 // Lazy load routes
 const routes = {

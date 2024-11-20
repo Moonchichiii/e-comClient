@@ -1,18 +1,27 @@
-// hooks/useAuth.ts
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { authEndpoints } from '@/features/auth/api/endpoints';
+import { authEndpoints } from '@/api/Endpoints';
+import { AuthContextProps, User } from '@/api/types';
 
-export function useAuth() {
-  const navigate = useNavigate();
+export function useAuth(): AuthContextProps {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  const { data: user, isLoading } = useQuery({
+  // Fetch user profile
+  const { data: user, isLoading } = useQuery<User | null>({
     queryKey: ['user'],
-    queryFn: () => authEndpoints.getProfile().then((res) => res.data),
+    queryFn: async () => {
+      try {
+        const response = await authEndpoints.getProfile();
+        return response.data;
+      } catch {
+        return null;
+      }
+    },
     staleTime: 5 * 60 * 1000,
   });
 
+  // Login Mutation
   const loginMutation = useMutation({
     mutationFn: authEndpoints.login,
     onSuccess: (data) => {
@@ -21,6 +30,15 @@ export function useAuth() {
     },
   });
 
+  const tokenLoginMutation = useMutation({
+    mutationFn: authEndpoints.tokenLogin,
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user'], data.data.user);
+      navigate('/dashboard');
+    },
+  });
+
+  // Register Mutation
   const registerMutation = useMutation({
     mutationFn: authEndpoints.register,
     onSuccess: (data) => {
@@ -29,6 +47,7 @@ export function useAuth() {
     },
   });
 
+  // Logout Mutation
   const logoutMutation = useMutation({
     mutationFn: authEndpoints.logout,
     onSuccess: () => {
@@ -38,10 +57,11 @@ export function useAuth() {
   });
 
   return {
-    user,
+    user: user || null,
     isLoading,
     isAuthenticated: !!user,
     login: loginMutation.mutate,
+    tokenLogin: tokenLoginMutation.mutate,
     register: registerMutation.mutate,
     logout: logoutMutation.mutate,
   };
