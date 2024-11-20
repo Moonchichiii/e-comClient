@@ -2,11 +2,12 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton';
 import { useAuth } from '@/features/auth/context/AuthContext';
+
 
 interface SignupFormData {
   email: string;

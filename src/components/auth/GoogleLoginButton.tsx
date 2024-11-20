@@ -1,4 +1,4 @@
-import { Button } from '@/components/auth/ui/button';
+import { Button } from '@/components/auth/ui/Button';
 import { useGoogleLogin } from '@/hooks/useGoogleLogin';
 import { Chrome } from 'lucide-react';
 

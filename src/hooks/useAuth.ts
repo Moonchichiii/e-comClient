@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import axios from '@/lib/axios'
-import type { User } from '@/features/types/auth.types'
+import { authEndpoints } from '@/features/auth/api/endpoints'
+import type { LoginCredentials, RegisterCredentials } from '@/features/auth/types/auth.types'
 
 export function useAuth() {
   const navigate = useNavigate()
@@ -9,15 +9,32 @@ export function useAuth() {
 
   const { data: user, isLoading } = useQuery({
     queryKey: ['user'],
-    queryFn: () => axios.get('/api/users/profile/').then(res => res.data),
+    queryFn: () => authEndpoints.getProfile().then(res => res.data),
+    retry: false,
+    staleTime: 5 * 60 * 1000,
   })
 
   const loginMutation = useMutation({
-    mutationFn: (credentials: { email: string; password: string }) => 
-      axios.post('/api/login/', credentials),
+    mutationFn: authEndpoints.login,
     onSuccess: (data) => {
-      queryClient.setQueryData(['user'], data.user)
+      queryClient.setQueryData(['user'], data.data.user)
       navigate('/dashboard')
+    },
+  })
+
+  const registerMutation = useMutation({
+    mutationFn: authEndpoints.register,
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user'], data.data.user)
+      navigate('/verify-email')
+    },
+  })
+
+  const logoutMutation = useMutation({
+    mutationFn: authEndpoints.logout,
+    onSuccess: () => {
+      queryClient.clear()
+      navigate('/login')
     },
   })
 
@@ -26,5 +43,7 @@ export function useAuth() {
     isLoading,
     isAuthenticated: !!user,
     login: loginMutation.mutate,
+    register: registerMutation.mutate,
+    logout: logoutMutation.mutate,
   }
 }
