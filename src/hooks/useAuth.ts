@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { authEndpoints } from '@/api/Endpoints';
-import { AuthContextProps, User } from '@/api/types';
+import { authEndpoints } from '@/api/endpoints/auth';
+import { AuthContextProps, User } from '@/api/types/auth';
 
 export function useAuth(): AuthContextProps {
   const queryClient = useQueryClient();

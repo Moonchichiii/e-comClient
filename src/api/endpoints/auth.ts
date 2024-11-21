@@ -1,6 +1,6 @@
-import { axiosInstance } from '@/api/apiConfig';
-import { AuthResponse, LoginCredentials, RegisterCredentials } from '@/api/types';
-import { User } from '@/api/types';
+import { axiosInstance } from '@/api/config/axios';
+import { AuthResponse, LoginCredentials, RegisterCredentials } from '@/api/types/auth';
+import { User } from '@/api/types/auth';
 
 export const authEndpoints = {
   login: (credentials: LoginCredentials) =>

@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useMutation } from '@tanstack/react-query';
-import { authEndpoints } from '@/api/Endpoints';
+import { authEndpoints } from '@/api/endpoints/auth';
 
 // Define schema with Zod
 const schema = z.object({

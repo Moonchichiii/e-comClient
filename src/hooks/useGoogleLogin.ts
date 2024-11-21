@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuthContext } from '@/providers/AuthProvider';
-import { axiosInstance } from '@/api/apiConfig';
+import { axiosInstance } from '@/api/config/axios';
 
 export const useGoogleLogin = () => {
   const [isLoading, setIsLoading] = useState(false);  
