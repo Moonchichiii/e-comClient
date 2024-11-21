@@ -1,13 +1,15 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   darkMode: ["class"],
   content: [
-    './src/**/*.{html,js,jsx,ts,tsx,css}',
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       fontFamily: {
         abys: ['Abys', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
         sans: ['Inter var', 'sans-serif'],
       },
       fontSize: {

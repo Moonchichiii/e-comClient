@@ -6,48 +6,56 @@ const IntroLanding: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const tl = gsap.timeline({
-      onComplete: () => handleTransition()
+    // Set initial states manually
+    gsap.set(['.intro-logo', '.intro-tagline', '.intro-cta'], {
+      opacity: 0,
+      y: 50
     });
 
-    tl.from('.intro-glow', {
-      opacity: 0,
-      scale: 0.8,
+    const tl = gsap.timeline({
+      delay: 0.2,
+      onComplete: () => {
+        setTimeout(handleTransition, 3500);
+      }
+    });
+
+    // Simpler animation sequence
+    tl.to('.intro-logo', {
+      opacity: 1,
+      y: 0,
       duration: 1.5,
-      ease: "power4.out"
+      ease: "power2.out"
     })
-    .from('.intro-logo', {
-      y: 50,
-      opacity: 0,
+    .to('.intro-tagline', {
+      opacity: 1,
+      y: 0,
+      duration: 1.5,
+      ease: "power2.out"
+    }, "-=0.5")
+    .to('.intro-cta', {
+      opacity: 1,
+      y: 0,
       duration: 1,
-      ease: "expo.out"
-    }, "-=0.8")
-    .from('.intro-tagline', {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      ease: "expo.out"
-    }, "-=0.6")
-    .from('.intro-cta', {
-      y: 20,
-      opacity: 0,
-      duration: 0.6,
-      ease: "expo.out"
-    }, "-=0.4");
+      ease: "power2.out"
+    }, "-=0.5");
 
     const handleTransition = () => {
-      gsap.timeline()
-        .to('.intro-content', {
-          y: -30,
+      const exitTl = gsap.timeline({
+        onComplete: () => navigate('/home', { replace: true })
+      });
+
+      exitTl
+        .to(['.intro-logo', '.intro-tagline', '.intro-cta'], {
           opacity: 0,
-          duration: 0.8,
+          y: -30,
+          duration: 0.5,
+          stagger: 0.1,
           ease: "power2.inOut"
         })
         .to('.intro-container', {
           opacity: 0,
-          duration: 0.5,
-          onComplete: () => navigate('/home', { replace: true })
-        }, "-=0.3");
+          duration: 0.3
+        });
     };
 
     const handleClick = () => {
@@ -55,33 +63,33 @@ const IntroLanding: React.FC = () => {
       handleTransition();
     };
 
-    const autoTransition = setTimeout(() => {
-      handleTransition();
-    }, 4000);
-
     document.addEventListener('click', handleClick);
 
     return () => {
       document.removeEventListener('click', handleClick);
-      clearTimeout(autoTransition);
       tl.kill();
     };
   }, [navigate]);
 
   return (
-    <div className="intro-container fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700">
+    <div className="intro-container fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700">
+      
       <div className="intro-glow absolute inset-0 bg-gradient-to-r from-white/20 via-indigo-400/20 to-violet-400/20 blur-3xl" />
       
-      <div className="intro-content relative z-10 w-full max-w-4xl mx-auto px-6 text-center">
-        <h1 className="intro-logo font-abys text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white mb-6 tracking-tighter">
-          LuxeCommerce
+      
+      <div className="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      
+        <h1 className="intro-logo select-none font-abys text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-6 tracking-tighter">
+          E-Commerce
         </h1>
         
-        <p className="intro-tagline text-xl sm:text-2xl md:text-3xl text-white/90 font-light max-w-2xl mx-auto mb-8">
+      
+        <p className="intro-tagline select-none text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 font-light max-w-2xl mx-auto mb-8">
           Where Luxury Meets Innovation
         </p>
         
-        <div className="intro-cta text-white/80 text-base sm:text-lg animate-pulse-soft">
+      
+        <div className="intro-cta select-none text-sm sm:text-base md:text-lg text-white/80 animate-pulse">
           Click anywhere to continue
         </div>
       </div>

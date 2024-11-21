@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import HeroSection from '@/pages/landing/components/HeroSection';
 import { FeaturesSection } from '@/pages/landing/components/FeaturesSection';
 import { ProductsSection } from '@/pages/landing/components/ProductsSection';
-import NewsletterSection from '@/pages/landing/components/NewsletterSection';
+import CookieConsent from '@/pages/landing/components/CookieConsent';
 
 const HomePage = () => {
   const { isAuthenticated } = useAuth();
@@ -17,7 +17,7 @@ const HomePage = () => {
       <HeroSection />
       <FeaturesSection />
       <ProductsSection />
-      <NewsletterSection />
+      <CookieConsent />
     </div>
   );
 };

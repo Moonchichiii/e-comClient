@@ -1,9 +1,7 @@
-// src/pages/auth/SignUpPage.tsx
-
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton';
-import SignUpForm from '@/features/auth/forms/SignUpForm';
+import SignUpForm from '@/features/auth/forms/RegisterForm';
 
 const SignUpPage: React.FC = () => {
   return (

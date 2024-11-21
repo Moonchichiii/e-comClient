@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ShoppingBag, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useAuthModal } from '@/features/auth/contexts/AuthModalContext';
 import { Button } from '@/components/ui/Button';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated } = useAuth();
+  const { openModal } = useAuthModal();
   const location = useLocation();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <span className="font-abys text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-              LuxeCommerce
+              E-Commerce
             </span>
           </Link>
 
@@ -53,12 +55,8 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             {!isAuthenticated ? (
               <>
-                <Link to="/login">
-                  <Button variant="outline" size="sm">Sign In</Button>
-                </Link>
-                <Link to="/signup">
-                  <Button size="sm">Sign Up</Button>
-                </Link>
+              <Button onClick={() => openModal('login')}>Sign In</Button>
+              <Button onClick={() => openModal('register')}>Sign Up</Button>
               </>
             ) : (
               <Link to="/dashboard">
@@ -121,20 +119,24 @@ const Navbar = () => {
               </div>
               {!isAuthenticated && (
                 <div className="space-y-2 pt-2">
-                  <Link
-                    to="/login"
-                    className="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
-                    onClick={() => setIsOpen(false)}
+                  <button
+                    className="block w-full px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 text-left"
+                    onClick={() => {
+                      openModal('login');
+                      setIsOpen(false);
+                    }}
                   >
                     Sign In
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
-                    onClick={() => setIsOpen(false)}
+                  </button>
+                  <button
+                    className="block w-full px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 text-left"
+                    onClick={() => {
+                      openModal('register');
+                      setIsOpen(false);
+                    }}
                   >
                     Sign Up
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>

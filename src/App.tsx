@@ -1,4 +1,3 @@
-// App.tsx
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@/layouts/RootLayout';

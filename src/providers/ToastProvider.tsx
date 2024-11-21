@@ -1,31 +1,47 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { Toast, ToastProps } from '@/components/ui/Toast';
-import { useState, useEffect } from 'react';
+import { createContext, useContext, useCallback, useState } from 'react';
+import { Toast } from '@/components/ui/Toast';
 
-const ToastContainer: React.FC = () => {
-  const queryClient = useQueryClient();
-  const [toasts, setToasts] = useState<ToastProps[]>([]);
+interface ToastContextValue {
+  showToast: (message: string, type?: Toast['type'], duration?: number) => void;
+}
 
-  useEffect(() => {
-    const unsubscribe = queryClient.getQueryCache().subscribe(() => {
-      const toastQueue = queryClient.getQueryData<ToastProps[]>(['toasts']) || [];
-      setToasts(toastQueue);
-    });
-    return () => unsubscribe();
-  }, [queryClient]);
+const ToastContext = createContext<ToastContextValue | undefined>(undefined);
+
+export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [toasts, setToasts] = useState<Toast[]>([]);
+
+  const showToast = useCallback((
+    message: string,
+    type: Toast['type'] = 'info',
+    duration: number = 3000
+  ) => {
+    const newToast: Toast = {
+      id: Math.random().toString(36).substr(2, 9),
+      message,
+      type,
+      duration,
+    };
+
+    setToasts(prev => [...prev, newToast]);
+
+    setTimeout(() => {
+      setToasts(prev => prev.filter(t => t.id !== newToast.id));
+    }, duration);
+  }, []);
 
   return (
-    <>
-      {toasts.map((toast, index) => (
-        <Toast key={index} {...toast} />
-      ))}
-    </>
+    <ToastContext.Provider value={{ showToast }}>
+      {children}
+      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            duration={toast.duration}
+          />
+        ))}
+      </div>
+    </ToastContext.Provider>
   );
 };
-
-export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <>
-    {children}
-    <ToastContainer />
-  </>
-);
