@@ -3,11 +3,28 @@ import { Link } from 'react-router-dom';
 import { MessageSquare, Mail, Github } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+interface SocialLink {
+  href: string;
+  icon: React.ComponentType;
+  label: string;
+}
+
+interface NavLink {
+  to: string;
+  label: string;
+}
+
+interface FooterLinks {
+  company: NavLink[];
+  shop: NavLink[];
+  service: NavLink[];
+  social: SocialLink[];
+}
 
 const Footer: FC = () => {
   const currentYear = new Date().getFullYear();
 
-  const links = {
+  const links: FooterLinks = {
     company: [
       { to: "/about", label: "About Us" },
       { to: "/careers", label: "Careers" },
@@ -84,7 +101,7 @@ const Footer: FC = () => {
             </p>
             <div className="flex space-x-4">
               {links.social.map(({ href, icon: Icon, label }) => (
-                
+                <a
                   key={label}
                   href={href}
                   className={cn(
