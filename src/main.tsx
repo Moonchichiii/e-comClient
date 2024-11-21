@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AuthProvider } from '@/providers/AuthProvider';
 import { ToastProvider } from '@/providers/ToastProvider';
 import App from './App';
-import './index.css';
+import '@/styles/globals.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {
