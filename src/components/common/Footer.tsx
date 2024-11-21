@@ -37,8 +37,8 @@ const Footer: FC = () => {
 
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 md:grid-cols-4 text-center sm:text-left">
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Company</h3>
@@ -81,21 +81,18 @@ const Footer: FC = () => {
             ))}
           </div>
 
-          {/* Newsletter */}
-          <div className="space-y-4">
+          {/* Social */}
+          <div className="space-y-4 col-span-2 sm:col-span-1">
             <h3 className="text-lg font-bold">Stay Connected</h3>
             <p className="text-gray-300">
-              Subscribe to our newsletter for updates and exclusive offers.
+              Follow us on social media for updates
             </p>
-            <div className="flex space-x-4">
+            <div className="flex justify-center sm:justify-start space-x-4">
               {links.social.map(({ href, icon: Icon, label }) => (
                 <a
                   key={label}
                   href={href}
-                  className={cn(
-                    "text-gray-300 hover:text-white",
-                    "transition-colors duration-200"
-                  )}
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                   onClick={(e) => e.preventDefault()}
                   aria-label={label}
                 >
@@ -107,8 +104,10 @@ const Footer: FC = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-400">&copy; {currentYear} LuxeCommerce. All rights reserved.</p>
+        <div className="mt-12 pt-8 border-t border-gray-800">
+          <p className="text-gray-400 text-center">
+            &copy; {currentYear} LuxeCommerce. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

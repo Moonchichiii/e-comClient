@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Abys';
-  src: url('assets/fonts/Abys-Regular.otf') format('opentype');
+  src: url('/src/assets/fonts/Abys-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
