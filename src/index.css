@@ -1,17 +1,8 @@
-@font-face {
-  font-family: 'Abys';
-  src: url('/src/assets/fonts/Abys-Regular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-h1, h2 {
-  font-family: 'Abys', sans-serif;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
  
 @layer base {
   :root {
@@ -36,4 +27,15 @@ h1, h2 {
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
   }
+}
+
+@font-face {
+  font-family: 'Abys';
+  src: url('assets/fonts/Abys-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1, h2 {
+  font-family: 'Abys', sans-serif;
 }

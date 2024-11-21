@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: ["class"], // Enable dark mode with class
+export default {
+  darkMode: ["class"],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -11,10 +11,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        abys: ['Abys', 'sans-serif'], // Custom font family
+        abys: ['Abys', 'sans-serif'],
       },
       colors: {
-        lightBackground: "#f2f1ec", // Light mode background color
+        lightBackground: "#f2f1ec",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -78,4 +78,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+}
