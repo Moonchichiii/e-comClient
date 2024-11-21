@@ -1,24 +1,13 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageSquare, Mail, Github } from 'lucide-react';
+import { Instagram, Twitter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface SocialLink {
-  href: string;
-  icon: React.ComponentType;
-  label: string;
-}
-
-interface NavLink {
-  to: string;
-  label: string;
-}
-
 interface FooterLinks {
-  company: NavLink[];
-  shop: NavLink[];
-  service: NavLink[];
-  social: SocialLink[];
+  company: Array<{ to: string; label: string }>;
+  shop: Array<{ to: string; label: string }>;
+  service: Array<{ to: string; label: string }>;
+  social: Array<{ href: string; icon: React.ComponentType; label: string }>;
 }
 
 const Footer: FC = () => {
@@ -28,23 +17,22 @@ const Footer: FC = () => {
     company: [
       { to: "/about", label: "About Us" },
       { to: "/careers", label: "Careers" },
-      { to: "/contact", label: "Contact" }
+      { to: "/contact", label: "Contact" },
     ],
     shop: [
       { to: "/products", label: "All Products" },
       { to: "/featured", label: "Featured" },
-      { to: "/new", label: "New Arrivals" }
+      { to: "/new", label: "New Arrivals" },
     ],
     service: [
       { to: "/faq", label: "FAQ" },
       { to: "/shipping", label: "Shipping" },
-      { to: "/returns", label: "Returns" }
+      { to: "/returns", label: "Returns" },
     ],
     social: [
-      { href: '#', icon: MessageSquare, label: 'Message' },
-      { href: '#', icon: Mail, label: 'Mail' },
-      { href: '#', icon: Github, label: 'Github' }
-    ]
+      { href: '#', icon: Twitter, label: 'X' },
+      { href: '#', icon: Instagram, label: 'Instagram' },
+    ],
   } as const;
 
   return (
@@ -119,8 +107,8 @@ const Footer: FC = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
-          <p>&copy; {currentYear} Your Company. All rights reserved.</p>
+        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-gray-400">&copy; {currentYear} LuxeCommerce. All rights reserved.</p>
         </div>
       </div>
     </footer>
