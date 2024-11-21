@@ -7,6 +7,7 @@ import { AuthProvider } from '@/providers/AuthProvider';
 import { ToastProvider } from '@/providers/ToastProvider';
 import App from './App';
 import '@/styles/globals.css';
+export { cn } from '@/lib/utils';
 
 const queryClient = new QueryClient({
   defaultOptions: {

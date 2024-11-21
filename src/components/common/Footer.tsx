@@ -1,7 +1,8 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageSquare, Mail, Github } from 'lucide-react';
-import cn from '@/lib/utils/classnames';
+import { cn } from '@/lib/utils';
+
 
 const Footer: FC = () => {
   const currentYear = new Date().getFullYear();
