@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const IntroLanding = () => {
+const IntroLanding: React.FC = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -39,15 +39,6 @@ const IntroLanding = () => {
       yoyo: true
     });
 
-    const handleClick = () => {
-      tl.kill();
-      handleTransition();
-    };
-
-    const autoTransition = setTimeout(() => {
-      handleTransition();
-    }, 4000);
-
     const handleTransition = () => {
       gsap.timeline()
         .to('.intro-glow', {
@@ -69,6 +60,15 @@ const IntroLanding = () => {
           onComplete: () => navigate('/home', { replace: true })
         }, "-=0.3");
     };
+
+    const handleClick = () => {
+      tl.kill();
+      handleTransition();
+    };
+
+    const autoTransition = setTimeout(() => {
+      handleTransition();
+    }, 4000);
 
     document.addEventListener('click', handleClick);
 
