@@ -1,8 +1,12 @@
+// pages/home/sections/HeroSection.tsx
 import React, { useEffect, useRef } from 'react';
 import { ShoppingCart, ArrowRight } from 'lucide-react';
 import { gsap } from 'gsap';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/Button';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -39,7 +43,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-indigo-50 to-white">
+    <main ref={heroRef} className="min-h-screen bg-gradient-to-br from-indigo-50 to-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center lg:text-left">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
@@ -55,21 +59,21 @@ const HeroSection = () => {
             >
               Experience luxury shopping reimagined. Find exclusive collections curated just for you.
             </p>
-            <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button 
-                type="button"
-                className="px-8 py-4 bg-indigo-600 text-white rounded-full font-semibold flex items-center justify-center gap-2 hover:bg-indigo-700 transition-colors"
+            <div ref={ctaRef} className="space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row justify-center lg:justify-start">
+              <Button
+                onClick={() => navigate('/login')}
+                className="px-8 py-6 bg-indigo-600 hover:bg-indigo-700"
               >
-                Shop Now
-                <ShoppingCart className="w-5 h-5" />
-              </button>
-              <button 
-                type="button"
-                className="px-8 py-4 border-2 border-indigo-600 text-indigo-600 rounded-full font-semibold flex items-center justify-center gap-2 hover:bg-indigo-50 transition-colors"
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => navigate('/signup')}
+                className="px-8 py-6"
               >
-                View Collections
-                <ArrowRight className="w-5 h-5" />
-              </button>
+                Create Account
+              </Button>
             </div>
           </div>
           <div
@@ -86,6 +90,11 @@ const HeroSection = () => {
               <p className="text-white/80">Spring Collection 2024</p>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-8 h-12 rounded-full border-2 border-indigo-600 flex items-center justify-center">
+          <div className="w-2 h-2 bg-indigo-600 rounded-full animate-ping" />
         </div>
       </div>
     </main>

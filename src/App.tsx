@@ -1,40 +1,44 @@
-import { Suspense, lazy } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+// App.tsx
+import { Suspense, lazy } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import ProtectedRoute from './utils/ProtectedRoute';
 
-// Lazy load routes
 const routes = {
-  auth: {
-    login: lazy(() => import('./pages/auth/LoginPage')),
-    signup: lazy(() => import('./pages/auth/SignUpPage')),
-    verify: lazy(() => import('./pages/auth/VerifyEmailPage'))
+  public: {
+    intro: lazy(() => import('@/pages/landing/IntroLanding')),
+    home: lazy(() => import('@/pages/home/HomePage')),
+    login: lazy(() => import('@/pages/auth/LoginPage')),
+    signup: lazy(() => import('@/pages/auth/SignUpPage')),
+    verify: lazy(() => import('@/pages/auth/VerifyEmailPage'))
   },
   app: {
     dashboard: lazy(() => import('@/pages/dashboard/Dashboard'))
   }
-}
+};
 
 const LoadingFallback = () => (
   <div className="flex h-screen items-center justify-center">
     <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
   </div>
-)
+);
 
 export default function App() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* Landing/Intro */}
+        <Route path="/" element={<routes.public.intro />} />
+        
+        {/* Main Layout Routes */}
         <Route element={<Layout />}>
-          <Route path="/login" element={<routes.auth.login />} />
-          <Route path="/signup" element={<routes.auth.signup />} />
-          <Route path="/verify-email/:token" element={<routes.auth.verify />} />
-        </Route>
+          {/* Public Routes */}
+          <Route path="/home" element={<routes.public.home />} />
+          <Route path="/login" element={<routes.public.login />} />
+          <Route path="/signup" element={<routes.public.signup />} />
+          <Route path="/verify-email/:token" element={<routes.public.verify />} />
 
-        {/* Protected routes */}
-        <Route element={<Layout />}>
+          {/* Protected Routes */}
           <Route
             path="/dashboard/*"
             element={
@@ -46,8 +50,8 @@ export default function App() {
         </Route>
 
         {/* 404 catch-all */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<routes.public.intro />} />
       </Routes>
     </Suspense>
-  )
+  );
 }

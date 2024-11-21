@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { authEndpoints } from '@/api/Endpoints';
 import { AuthContextProps, User } from '@/api/types';
-import { AxiosInstance } from '@/api/apiConfig';
 
 export function useAuth(): AuthContextProps {
   const queryClient = useQueryClient();
@@ -31,14 +30,6 @@ export function useAuth(): AuthContextProps {
     },
   });
 
-  const tokenLoginMutation = useMutation({
-    mutationFn: authEndpoints.tokenLogin,
-    onSuccess: (data) => {
-      queryClient.setQueryData(['user'], data.data.user);
-      navigate('/dashboard');
-    },
-  });
-
   // Register Mutation
   const registerMutation = useMutation({
     mutationFn: authEndpoints.register,
@@ -53,25 +44,26 @@ export function useAuth(): AuthContextProps {
     mutationFn: authEndpoints.logout,
     onSuccess: () => {
       queryClient.clear();
-      navigate('/login');
+      navigate('/');
     },
   });
 
-  // Token Login Function
-  const tokenLogin = (tokens: { access: string; refresh: string }) => {
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${tokens.access}`;
-    queryClient.invalidateQueries(['user']);
-    navigate('/dashboard');
-  };
+  // Token Login (for social auth)
+  const tokenLoginMutation = useMutation({
+    mutationFn: authEndpoints.tokenLogin,
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user'], data.data);
+      navigate('/dashboard');
+    },
+  });
 
   return {
     user: user || null,
     isLoading,
     isAuthenticated: !!user,
     login: loginMutation.mutate,
-    tokenLogin: tokenLoginMutation.mutate,
     register: registerMutation.mutate,
     logout: logoutMutation.mutate,
-    tokenLogin, 
+    tokenLogin: tokenLoginMutation.mutate,
   };
 }
