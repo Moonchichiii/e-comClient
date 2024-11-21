@@ -1,8 +1,8 @@
 // App.tsx
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Layout } from '@/components/layout/Layout';
-import ProtectedRoute from './utils/ProtectedRoute';
+import { Layout } from '@/layouts/RootLayout';
+import ProtectedRoute from './utils/protected-route';
 
 const routes = {
   public: {
@@ -33,7 +33,7 @@ export default function App() {
         {/* Main Layout Routes */}
         <Route element={<Layout />}>
           {/* Public Routes */}
-          <Route path="/home" element={<routes.public.home />} />
+          <Route path="/home" element={<routes.public.home />} />          
           <Route path="/login" element={<routes.public.login />} />
           <Route path="/signup" element={<routes.public.signup />} />
           <Route path="/verify-email/:token" element={<routes.public.verify />} />
