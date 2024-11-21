@@ -2,16 +2,18 @@
 /// <reference types="react" />
 /// <reference types="react-dom" />
 
-// Add type declarations for static assets if needed
+// SVG as React components
 declare module '*.svg' {
-    import * as React from 'react'
-    const SVGComponent: React.FunctionComponent<React.SVGAttributes<SVGElement>>
-    export default SVGComponent
-  }
-  
-  declare module '*.png'
-  declare module '*.jpg'
-  declare module '*.jpeg'
-  declare module '*.gif'
-  declare module '*.bmp'
-  declare module '*.tiff'
+  import * as React from 'react'
+  const SVGComponent: React.FunctionComponent<React.SVGAttributes<SVGElement>>
+  export default SVGComponent
+}
+
+// Modern image formats
+declare module '*.webp'
+declare module '*.png'
+declare module '*.jpg'
+declare module '*.jpeg'
+
+// Optional: If you use animated images
+declare module '*.gif'
