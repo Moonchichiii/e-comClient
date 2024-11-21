@@ -1,9 +1,43 @@
-// components/layout/Footer.tsx
+// src/components/layout/Footer.tsx
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { 
+  Facebook as FacebookIcon, 
+  Twitter as TwitterIcon, 
+  Instagram as InstagramIcon, 
+  Youtube as YoutubeIcon 
+} from 'lucide-react';
+import { cn } from '@/lib/utils';  // This is fine to use
 
-const Footer = () => {
+interface FooterProps {}
+
+const Footer: React.FC<FooterProps> = () => {
   const currentYear = new Date().getFullYear();
+
+  const socialLinks = [
+    { 
+      href: '#', 
+      icon: FacebookIcon, 
+      label: 'Facebook'
+    },
+    { 
+      href: '#', 
+      icon: TwitterIcon, 
+      label: 'Twitter'
+    },
+    { 
+      href: '#', 
+      icon: InstagramIcon, 
+      label: 'Instagram'
+    },
+    { 
+      href: '#', 
+      icon: YoutubeIcon, 
+      label: 'Youtube'
+    }
+  ] as const;
+
+  const linkStyles = "block text-gray-300 hover:text-white transition-colors";
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -12,13 +46,13 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Company</h3>
-            <Link to="/about" className="block text-gray-300 hover:text-white">
+            <Link to="/about" className={linkStyles}>
               About Us
             </Link>
-            <Link to="/careers" className="block text-gray-300 hover:text-white">
+            <Link to="/careers" className={linkStyles}>
               Careers
             </Link>
-            <Link to="/contact" className="block text-gray-300 hover:text-white">
+            <Link to="/contact" className={linkStyles}>
               Contact
             </Link>
           </div>
@@ -26,13 +60,13 @@ const Footer = () => {
           {/* Shop */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Shop</h3>
-            <Link to="/products" className="block text-gray-300 hover:text-white">
+            <Link to="/products" className={linkStyles}>
               All Products
             </Link>
-            <Link to="/featured" className="block text-gray-300 hover:text-white">
+            <Link to="/featured" className={linkStyles}>
               Featured
             </Link>
-            <Link to="/new" className="block text-gray-300 hover:text-white">
+            <Link to="/new" className={linkStyles}>
               New Arrivals
             </Link>
           </div>
@@ -40,13 +74,13 @@ const Footer = () => {
           {/* Customer Service */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Customer Service</h3>
-            <Link to="/faq" className="block text-gray-300 hover:text-white">
+            <Link to="/faq" className={linkStyles}>
               FAQ
             </Link>
-            <Link to="/shipping" className="block text-gray-300 hover:text-white">
+            <Link to="/shipping" className={linkStyles}>
               Shipping
             </Link>
-            <Link to="/returns" className="block text-gray-300 hover:text-white">
+            <Link to="/returns" className={linkStyles}>
               Returns
             </Link>
           </div>
@@ -58,18 +92,20 @@ const Footer = () => {
               Subscribe to our newsletter for updates and exclusive offers.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-300 hover:text-white">
-                <Facebook className="h-6 w-6" />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white">
-                <Twitter className="h-6 w-6" />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white">
-                <Instagram className="h-6 w-6" />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white">
-                <Youtube className="h-6 w-6" />
-              </a>
+              {socialLinks.map(({ href, icon: Icon, label }) => (
+                <a 
+                  key={label}
+                  href={href} 
+                  className={cn(
+                    "text-gray-300 hover:text-white",
+                    "transition-colors duration-200"
+                  )}
+                  onClick={(e) => e.preventDefault()}
+                  aria-label={label}
+                >
+                  <Icon className="h-6 w-6" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
